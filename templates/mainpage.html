@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+  <link rel="stylesheet" href="/static/main.css">
+
+    <h1> reseptit! </h1>
+
+    {% for message in get_flashed_messages() %}
+    <i><h3>{{ message }}</h3></i>
+    {% endfor %}
+
+    <nav>
+        <ul>
+            <li><a href="/register">Luo tunnus</a></li>
+
+            <!-- {% if session.user_id %}
+            <li><a href="/logout">Kirjaudu ulos</a></li> 
+            {% else %} -->
+
+            <li><a href="/login-page">Kirjaudu sisään</a></li>
+
+            <!-- {% endif %} -->
+        </ul>
+    </nav>
+
+    <body> 
+        tällä hetkeellä n reseptejä <br>
+        sivua on ladattu {{visits}} kertaa. viimeiksi ladattu {{date}}. <br>
+        <a href="/create">uusi resepti</a> <!-- pitäis vaatia tiili -->
+    </body>
+</html>

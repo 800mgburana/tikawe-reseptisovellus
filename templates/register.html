@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<link rel="stylesheet" href="/static/main.css">
+
+<head>
+  <h3>Rekisteröinti</h3>
+</head>
+
+<body>
+
+  {% for mesg in get_flashed_messages() %}
+  <h1>{{ mesg }}</h1>
+  {% endfor %}
+
+  <form action="/register" method="post">
+
+    <p>
+      Tunnus: <br />
+      <input type="text" name="username" value="{{ filled.username }}" maxlength="16" />
+    </p>
+
+    <p>
+      Salasana: <br />
+      <input type="password" name="password1" />
+    </p>
+
+    <p>
+      Salasana uudestaan: <br />
+      <input type="password" name="password2" />
+    </p>
+
+    <input type="submit" value="Luo tunnus" />
+
+  </form>
+
+</body>
+
+</html>
