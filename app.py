@@ -16,7 +16,11 @@ def mainapge():
 
     visit_ammount = (db.query("SELECT COUNT(*) FROM visits"))[0][0]
     last_visit = db.query("SELECT visited_at FROM visits ORDER BY visited_at DESC LIMIT 1")[0][0]
-    return render_template("mainpage.html", visits = visit_ammount, date = last_visit)
+
+    recipes = db.query("SELECT title, ingredients, instructions FROM recipes")
+
+    return render_template("mainpage.html", visits = visit_ammount, date = last_visit,
+                           recipes = recipes, n = len(recipes))
 
 # user
 
@@ -58,6 +62,7 @@ def login():
         return render_template("login.html", next_page=request.referrer)
 
     if request.method == "POST":
+        global username
         username = request.form["username"]
         password = request.form["password"]
         #next_page = request.form["next_page"] # doesnt work???
@@ -74,7 +79,24 @@ def login():
             flash("VIRHE: Väärä tunnus tai salasana")
             return render_template("login.html", next_page=next_page)
 
-@app.route("/logout") # doesnt work?
+@app.route("/logout")
 def logout():
-    del session["username"]
+    del session["user_id"]
+    flash("Olet kirjautunut ulos.")
+    return redirect("/")
+
+# posts
+
+@app.route("/new")
+def new():
+    return render_template("new.html")
+
+@app.route("/send", methods=["POST"])
+def send():
+    title = request.form["title"]
+    ingredients = request.form["ingredients"]
+    instructions = request.form["instructions"]
+
+    db.execute("INSERT INTO recipes(title, ingredients, instructions) VALUES(?, ?, ?)",
+               [title, ingredients, instructions])
     return redirect("/")

@@ -24,8 +24,19 @@
     </nav>
 
     <body> 
-        tällä hetkeellä n reseptejä <br>
-        sivua on ladattu {{visits}} kertaa. viimeiksi ladattu {{date}}. <br>
-        <a href="/create">uusi resepti</a> <!-- pitäis vaatia tiili -->
+        <p> tällä hetkeellä {{n}} reseptejä <br>
+        sivua on ladattu {{visits}} kertaa. viimeiksi ladattu {{date}}. <br> </p>
+
+        <a href="/new">uusi resepti</a> <br>  <!-- pitäis vaatia tiili --> 
+
+        {% for recipe in recipes %}
+        <p>
+            <h3>{{ recipe[0] }}</h3>
+            {{ recipe[1] }} <br> <!-- should be bullet points?-->
+            {{ recipe[2] }}
+        </p>
+        <hr />
+        {% endfor %}
+
     </body>
 </html>
