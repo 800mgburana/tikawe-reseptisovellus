@@ -1,6 +1,6 @@
 import sqlite3
 from flask import *
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 import db
 import secrets
 import users
@@ -27,7 +27,7 @@ def show_recipe(recipe_id):
     recipe = rcps.get_recipe(recipe_id)
     return render_template("recipe.html", recipe=recipe)
 
-# user
+# user actions
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -89,7 +89,7 @@ def logout():
     flash("Olet kirjautunut ulos.")
     return redirect("/")
 
-# posts
+# post actions
 
 @app.route("/new")
 def new():
@@ -97,19 +97,25 @@ def new():
 
 @app.route("/send", methods=["POST"]) # add poster
 def send():
+    user_id = session["user_id"]
     title = request.form["title"]
     ingredients = request.form["ingredients"]
     instructions = request.form["instructions"]
 
-    db.execute("""INSERT INTO recipes(title, ingredients, instructions, status, date) 
-               VALUES(?, ?, ?, 1, datetime('now'))""",
-               [title, ingredients, instructions]) 
+    print(user_id)
+    db.execute("""INSERT INTO recipes
+               (title, ingredients, instructions, status, date, user_id) 
+               VALUES(?, ?, ?, 1, datetime('now'), ?)""",
+               [title, ingredients, instructions, user_id]) 
                                                    
     return redirect("/")
 
 @app.route("/edit/<int:recipe_id>", methods=["GET", "POST"])
 def edit_recipe(recipe_id):
     recipe = rcps.get_recipe(recipe_id)
+
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
 
     if request.method == "GET":
         return render_template("edit.html", recipe=recipe)
@@ -126,6 +132,9 @@ def edit_recipe(recipe_id):
 def delete_recipe(recipe_id):
     recipe = rcps.get_recipe(recipe_id)
 
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
+
     if request.method == "GET":
         return render_template("delete.html", recipe=recipe)
     
@@ -138,9 +147,12 @@ def delete_recipe(recipe_id):
             return redirect("/recipe/" + str(recipe_id))
 
 # to add
-# delete posts 
-# edit posts 
-# post creator
+# rights
+# recipe picture
+# users picture???
+# user pages
+# search
+# update users table (id)
 
 @app.route("/mole")
 def mole():

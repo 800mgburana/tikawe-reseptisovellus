@@ -5,6 +5,8 @@
 
     {% if recipe.status == 1 %}
 
+    {{ recipe.username }} ({{ recipe.date }})
+
     <head>
         <title>{{ recipe.title }}</title>
     </head>
@@ -12,11 +14,15 @@
     <body>
     <h1>{{ recipe.title }}</h1>
 
-    {{recipe.ingredients}} <br>
+    {% set list = recipe.ingredients.split(',') %}
+    {% for ingredient in list %} 
+    <li> {{ingredient}} </li> 
+    {% endfor %}
+
     {{recipe.instructions}} <br>
     </body>
 
-    {% if session.user_id %}
+    {% if session.user_id == recipe.user_id %}
     <a href="/edit/{{recipe.id}}">muokkaa</a>
     <a href="/delete/{{recipe.id}}">poista</a>
     {% endif %}

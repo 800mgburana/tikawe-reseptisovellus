@@ -43,7 +43,7 @@
         {% if recipe.status == 1 %}
         <p>
             <a href="/recipe/{{recipe.id}}">{{recipe.title}}</a> <br />
-            postattu {{recipe.date}} <br />
+            {{recipe.username}} ({{recipe.date}}) <br />
         </p>
         <hr />
         {% endif %}

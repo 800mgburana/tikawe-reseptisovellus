@@ -3,6 +3,12 @@ import db
 from werkzeug.security import check_password_hash
 
 def check_login(username, password):
-    password_hash = (db.query("SELECT password_hash FROM users WHERE username = (?)", [username]))[0][0]
+    sql = "SELECT id, password_hash FROM users WHERE username = ?"
+    result = db.query(sql, [username])
 
-    return check_password_hash(password_hash, password)
+    if len(result) == 1:
+        user_id, password_hash = result[0]
+        if check_password_hash(password_hash, password):
+            return user_id
+        
+    return None
