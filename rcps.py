@@ -32,3 +32,12 @@ def delete_recipe(recipe_id):
              WHERE id = ?"""
     
     db.execute(sql, [recipe_id])
+
+def search(query):
+    sql = """SELECT r.id recipe_id, r.title, r.ingredients,
+                    r.date, u.username
+             FROM recipes r, users u
+             WHERE r.user_id = u.id AND r.title LIKE ?
+             ORDER BY r.date DESC"""
+    
+    return db.query(sql, ["%" + query + "%"])

@@ -191,9 +191,13 @@ def delete_recipe(recipe_id):
         else:
             return redirect("/recipe/" + str(recipe_id))
 
-# to add
-# recipe picture
-# search
+@app.route("/search")
+def search():
+    query = request.args.get("query")
+    results = rcps.search(query) if query else []
+    return render_template("search.html", query=query, results=results)
+
+#
 
 @app.route("/mole")
 def mole():

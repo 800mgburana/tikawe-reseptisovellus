@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="/static/main.css">
+
+    <head>
+        <title> haku </title>
+    </head>
+
+    <body>
+        <h1> haku </h1>
+
+        <form action="/search" method="get">
+            <p>
+                hakusana:
+                {% if query %}
+                <input type="text" name="query" value="{{ query }}"/>
+                {% else %}
+                <input type="text" name="query"/>
+                {% endif %}
+            </p>
+            <input type="submit" value="hae"/>
+        </form>
+
+
+        {% if query %}
+        <hr />
+        <h2> tulokset </h2>
+
+        <ul>
+            {% for result in results %}
+            <li>
+                <a href="/recipe/{{result.recipe_id}}">
+                    {{ result.title}}
+                </a>
+                <br />
+                {{result.username}} ({{ result.date }})
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% endif %}
+
+    </body>
+</html>
+
+<!-- search by title and search by ingredient -->

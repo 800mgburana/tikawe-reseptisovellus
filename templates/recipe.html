@@ -12,13 +12,17 @@
     </head>
 
     <body>
-    <h1>{{ recipe.title }}</h1>
+    <h2>{{ recipe.title }}</h2>
 
+    <h4> ainesosat </h4>
     {% set list = recipe.ingredients.split(',') %}
     {% for ingredient in list %} 
     <li> {{ingredient}} </li> 
     {% endfor %}
 
+    <br>
+
+    <h4> ohjeet </h4>
     {{recipe.instructions}} <br>
     </body>
 
